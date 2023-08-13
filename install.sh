@@ -49,7 +49,7 @@ if [[ "$install_choice" =~ ^[Yy]$ ]]; then
     desktop_file="$HOME/.local/share/applications/linuxmultrbx.desktop"
     echo "[Desktop Entry]
 Name=MULTRBX
-Exec=gnome-terminal --wait -- $HOME/.multrbx/middleman.sh %u
+Exec=kgx --wait -e $HOME/.multrbx/middleman.sh %u
 Type=Application
 MimeType=x-scheme-handler/multrbx-launch;
 NoDisplay=true" > "$desktop_file"
@@ -64,14 +64,14 @@ NoDisplay=true" > "$desktop_file"
 
 if [[ \"\$1\" == \"multrbx-launch:\"* ]]; then
     ref=\${1#multrbx-launch://}
-    echo \"gotcha!\"
+    echo \"[MIDDLEMAN] Scooped authentication key, passing this onto the launcher...\"
     
     # get just the good stuff
     ref=\${ref#multrbx-launch:}
     
     WINEDEBUG=-all wine64 ~/.wine/drive_c/MULTRBX/MultRBXLauncher.exe \"\$ref\"
 else
-    echo \"smth happened\"
+    echo \"[MIDDLEMAN] URI invalid!\"
 fi
 
 sleep 5" > "$middleman_script"
