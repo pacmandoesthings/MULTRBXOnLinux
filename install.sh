@@ -37,7 +37,7 @@ if [[ "$install_choice" =~ ^[Yy]$ ]]; then
     mkdir -p ~/.multrbx/
     cd ~/.multrbx/
     curl https://mulrbx.com/MULTRBXInstaller.exe -o installer.exe
-    wine64 installer.exe
+    WINEDEBUG=-all wine64 installer.exe
     # Wine install should be done by now
     
     clear
@@ -69,7 +69,7 @@ if [[ \"\$1\" == \"multrbx-launch:\"* ]]; then
     # get just the good stuff
     ref=\${ref#multrbx-launch:}
     
-    wine64 ~/.wine/drive_c/MULTRBX/MultRBXLauncher.exe \"\$ref\"
+    WINEDEBUG=-all wine64 ~/.wine/drive_c/MULTRBX/MultRBXLauncher.exe \"\$ref\"
 else
     echo \"smth happened\"
 fi
