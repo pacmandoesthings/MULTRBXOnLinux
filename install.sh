@@ -16,8 +16,8 @@ if ! command -v curl &>/dev/null; then
     exit 1
 fi
 
-if ! command -v gnome-terminal &>/dev/null; then
-    echo "Looks like you don't have the GNOME Terminal installed."
+if ! command -v kgx &>/dev/null; then
+    echo "Looks like you don't have GNOME Console installed."
     echo "Please install it with your distribution's package manager."
     exit 1
 fi
