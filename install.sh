@@ -1,6 +1,7 @@
 #!/bin/bash
 
 linux_username=$(whoami)
+desktop_file="$HOME/.local/share/applications/linuxmultrbx.desktop"
 
 # Dep check
 if ! command -v wine64 &>/dev/null; then
@@ -45,20 +46,23 @@ if [[ "$install_choice" =~ ^[Yy]$ ]]; then
     echo "Now installing URI..."
     
     # Installer: URI
-    # Create desktop file
-    desktop_file="$HOME/.local/share/applications/linuxmultrbx.desktop"
-    echo "[Desktop Entry]
+    # Create desktop file if it doesn't exist
+    if [ ! -f "$desktop_file" ]; then
+        echo "[Desktop Entry]
 Name=MULTRBX
 Exec=kgx --wait -e $HOME/.multrbx/middleman.sh %u
 Type=Application
 MimeType=x-scheme-handler/multrbx-launch;
 NoDisplay=true" > "$desktop_file"
 
-    sed -i "s|/home/pacman/|/home/$linux_username/|g" "$desktop_file"
-    xdg-mime default linuxmultrbx.desktop x-scheme-handler/multrbx-launch;
-    cd ~/.multrbx/
-    
-    # Create middleman.sh
+        sed -i "s|/home/$linux_username/|/home/$linux_username/|g" "$desktop_file"
+        xdg-mime default linuxmultrbx.desktop x-scheme-handler/multrbx-launch;
+        cd ~/.multrbx/
+    else
+        echo "Desktop file already exists. Skipping creation."
+    fi
+
+    # Rest of the script...
     middleman_script="$HOME/.multrbx/middleman.sh"
     echo "#!/usr/bin/env bash
 
@@ -72,9 +76,7 @@ if [[ \"\$1\" == \"multrbx-launch:\"* ]]; then
     WINEDEBUG=-all wine64 ~/.wine/drive_c/MULTRBX/MultRBXLauncher.exe \"\$ref\"
 else
     echo \"[MIDDLEMAN] URI invalid!\"
-fi
-
-sleep 5" > "$middleman_script"
+fi" > "$middleman_script"
 
     # Make the script executable
     chmod +x "$middleman_script"
