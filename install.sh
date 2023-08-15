@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $(lsb_release -si) == "Ubuntu" ]]; then
+    echo "This script does not work on Ubuntu. Switch to Debian or anything Arch-based, for the love of god."
+    exit 1
+fi
+
 linux_username=$(whoami)
 desktop_file="$HOME/.local/share/applications/linuxmultrbx.desktop"
 
